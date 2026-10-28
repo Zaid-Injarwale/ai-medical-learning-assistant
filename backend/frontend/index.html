@@ -1,0 +1,3724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Medical Learning Assistant</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f7f9fc;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           APP LAYOUT
+           ===================================================== */
+
+        .app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
+
+        .sidebar {
+            width: 270px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 8px 5px;
+        }
+
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+
+        .brand-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #172554;
+        }
+
+
+        /* =====================================================
+           NEW CHAT
+           ===================================================== */
+
+        .new-chat {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #2563eb;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+
+        .new-chat:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =====================================================
+           QUIZ BUTTON
+           ===================================================== */
+
+        .quiz-button {
+            width: 100%;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin-top: 9px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+
+        .quiz-button:hover {
+            background: #dbeafe;
+        }
+
+
+        /* =====================================================
+           STUDY BUTTON
+           ===================================================== */
+
+        .study-button {
+            width: 100%;
+            border: 1px solid #dcfce7;
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin-top: 9px;
+            background: #f0fdf4;
+            color: #15803d;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+
+        .study-button:hover {
+            background: #dcfce7;
+        }
+
+
+        /* =====================================================
+           STUDY MODE
+           ===================================================== */
+
+        .study-panel {
+            width: 100%;
+            max-width: 900px;
+            margin: 35px auto 0;
+        }
+
+
+        .study-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .study-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+
+        .study-title {
+            margin: 0;
+            color: #172554;
+            font-size: 24px;
+        }
+
+
+        .study-subtitle {
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        .study-label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+
+        .study-input,
+        .study-select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 11px 12px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            box-sizing: border-box;
+        }
+
+
+        .study-input:focus,
+        .study-select:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+        }
+
+
+        .study-start {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #16a34a;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+
+        .study-start:hover {
+            background: #15803d;
+        }
+
+
+        .study-start:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+
+        .study-section {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+
+        .study-section h3 {
+            margin: 0 0 10px;
+            color: #172554;
+            font-size: 17px;
+        }
+
+
+        .study-text {
+            margin: 0;
+            color: #374151;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+
+        .study-list {
+            margin: 0;
+            padding-left: 20px;
+            color: #374151;
+        }
+
+
+        .study-list li {
+            margin-bottom: 8px;
+            line-height: 1.55;
+        }
+
+
+        .study-memory {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+        }
+
+
+        .study-clinical {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+        }
+
+
+        .study-exam {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+        }
+
+
+        @media (max-width: 700px) {
+            .study-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+
+        /* =====================================================
+           QUIZ MODE
+           ===================================================== */
+
+        .quiz-panel {
+            width: 100%;
+            max-width: 850px;
+            margin: 35px auto 0;
+        }
+
+
+        .quiz-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .quiz-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+
+        .quiz-title {
+            margin: 0;
+            color: #172554;
+            font-size: 24px;
+        }
+
+
+        .quiz-subtitle {
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        .quiz-close {
+            border: none;
+            background: #f1f5f9;
+            color: #475569;
+            border-radius: 9px;
+            padding: 8px 11px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+
+        .quiz-close:hover {
+            background: #e2e8f0;
+        }
+
+
+        .quiz-setup {
+            display: grid;
+            gap: 15px;
+        }
+
+
+        .quiz-label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+
+        .quiz-input,
+        .quiz-select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 11px 12px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+
+        .quiz-input:focus,
+        .quiz-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+
+        .quiz-start {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #2563eb;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+
+        .quiz-start:hover {
+            background: #1d4ed8;
+        }
+
+
+        .quiz-start:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+
+        .quiz-progress {
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+
+        .quiz-question {
+            margin: 0 0 18px;
+            color: #172554;
+            font-size: 19px;
+            line-height: 1.55;
+        }
+
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+
+        .quiz-option {
+            width: 100%;
+            margin: 0;
+            text-align: left;
+            border: 1px solid #dbeafe;
+            border-radius: 11px;
+            padding: 13px 14px;
+            background: #f8fafc;
+            color: #374151;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        .quiz-option:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+
+        .quiz-option:disabled {
+            cursor: default;
+            opacity: 1;
+        }
+
+
+        .quiz-option.correct {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+
+        .quiz-option.wrong {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+
+        .quiz-feedback {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 11px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        .quiz-next {
+            width: 100%;
+            margin-top: 12px;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #2563eb;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+
+        .quiz-next:hover {
+            background: #1d4ed8;
+        }
+
+
+        .quiz-score {
+            text-align: center;
+            padding: 15px 0 20px;
+        }
+
+
+        .quiz-score-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: #2563eb;
+        }
+
+
+        .quiz-score-label {
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        .quiz-review {
+            margin-top: 15px;
+        }
+
+
+        .quiz-review-item {
+            margin-bottom: 12px;
+            padding: 13px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+
+        .quiz-review-correct {
+            color: #166534;
+            font-weight: 700;
+        }
+
+
+        .quiz-review-wrong {
+            color: #991b1b;
+            font-weight: 700;
+        }
+
+
+        .quiz-actions {
+            display: grid;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+
+        .quiz-action-primary,
+        .quiz-action-secondary {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 11px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        .quiz-action-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        .quiz-action-primary:hover {
+            background: #1d4ed8;
+        }
+
+
+        .quiz-action-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+
+        .quiz-action-secondary:hover {
+            background: #e2e8f0;
+        }
+
+
+        /* =====================================================
+           SIDEBAR TITLE
+           ===================================================== */
+
+        .sidebar-title {
+            margin-top: 28px;
+            margin-bottom: 10px;
+            padding-left: 5px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+
+        /* =====================================================
+           SAVED CHATS
+           ===================================================== */
+
+        .saved-chats {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 3px;
+        }
+
+
+        .saved-chat {
+            padding: 10px 11px;
+            margin-bottom: 5px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+
+        .saved-chat:hover {
+            background: #f1f5f9;
+        }
+
+
+        .saved-chat.active {
+            background: #eff6ff;
+        }
+
+
+        .saved-chat-title {
+            font-size: 13px;
+            color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .saved-chat-date {
+            margin-top: 3px;
+            font-size: 10px;
+            color: #9ca3af;
+        }
+
+
+        .empty-chats {
+            padding: 15px 5px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+
+        /* =====================================================
+           MAIN
+           ===================================================== */
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .topbar {
+            height: 65px;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+        }
+
+
+        .topbar-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #172554;
+        }
+
+
+        .topbar-subtitle {
+            margin-left: 10px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+
+        /* =====================================================
+           CHAT AREA
+           ===================================================== */
+
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 35px 25px 150px;
+        }
+
+
+        .chat-content {
+            width: 100%;
+            max-width: 850px;
+            margin: auto;
+        }
+
+
+        /* =====================================================
+           WELCOME
+           ===================================================== */
+
+        .welcome {
+            text-align: center;
+            padding: 70px 20px 40px;
+        }
+
+
+        .welcome-icon {
+            width: 65px;
+            height: 65px;
+            margin: auto;
+            border-radius: 20px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+
+        .welcome h1 {
+            margin: 20px 0 8px;
+            font-size: 30px;
+            color: #172554;
+        }
+
+
+        .welcome p {
+            margin: 0 auto;
+            max-width: 550px;
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 9px;
+            margin-top: 25px;
+        }
+
+
+        .suggestion {
+            border: 1px solid #dbeafe;
+            background: white;
+            color: #374151;
+            padding: 9px 13px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.15s;
+        }
+
+
+        .suggestion:hover {
+            background: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+
+        /* =====================================================
+           MESSAGES
+           ===================================================== */
+
+        .message {
+            margin-bottom: 30px;
+        }
+
+
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+        .user-bubble {
+            max-width: 75%;
+            background: #2563eb;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 16px 16px 4px 16px;
+            line-height: 1.6;
+            font-size: 15px;
+            white-space: pre-wrap;
+        }
+
+
+        .ai-message {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+
+        .ai-icon {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+
+        .ai-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+
+        .ai-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+
+        .answer {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #374151;
+            white-space: pre-wrap;
+        }
+
+
+        /* =====================================================
+           INFO ROW
+           ===================================================== */
+
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           KEY POINTS
+           ===================================================== */
+
+        .learning-box {
+            margin-top: 18px;
+            padding: 17px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+
+        .box-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #172554;
+            margin-bottom: 10px;
+        }
+
+
+        .key-points {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+
+        .key-points li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            line-height: 1.55;
+            color: #4b5563;
+        }
+
+
+        /* =====================================================
+           MEMORY AID
+           ===================================================== */
+
+        .memory-box {
+            margin-top: 12px;
+            padding: 15px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 11px;
+        }
+
+
+        .memory-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #c2410c;
+            margin-bottom: 6px;
+        }
+
+
+        .memory-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #7c2d12;
+        }
+
+
+        /* =====================================================
+           IMAGE
+           ===================================================== */
+
+        .image-box {
+            margin-top: 18px;
+            border-radius: 13px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            background: white;
+        }
+
+
+        .image-header {
+            padding: 11px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+
+        .image-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+
+        #medicalImage {
+            display: block;
+            max-width: 100%;
+            max-height: 600px;
+            margin: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+
+        .image-title {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+
+        .image-source {
+            margin-top: 5px;
+            font-size: 11px;
+        }
+
+
+        .image-source a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+
+        .image-loading {
+            padding: 25px;
+            color: #2563eb;
+            font-size: 13px;
+        }
+
+
+        .image-error {
+            display: none;
+            padding: 15px;
+            color: #b91c1c;
+            font-size: 13px;
+            background: #fef2f2;
+            border-radius: 8px;
+        }
+
+
+        /* =====================================================
+           VISUAL INFO
+           ===================================================== */
+
+        .visual-info {
+            margin-top: 12px;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+
+        /* =====================================================
+           INPUT AREA
+           ===================================================== */
+
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 270px;
+            right: 0;
+            padding: 15px 25px 20px;
+            background: linear-gradient(
+                transparent,
+                #f7f9fc 25%
+            );
+        }
+
+
+        .input-wrapper {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 15px;
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: flex-end;
+            padding: 8px;
+        }
+
+
+        #question {
+            flex: 1;
+            border: none;
+            outline: none;
+            resize: none;
+            min-height: 45px;
+            max-height: 130px;
+            padding: 11px 12px;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.5;
+            background: transparent;
+        }
+
+
+        #askButton {
+            flex-shrink: 0;
+            width: 43px;
+            height: 43px;
+            border: none;
+            border-radius: 11px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.2s;
+        }
+
+
+        #askButton:hover {
+            background: #1d4ed8;
+        }
+
+
+        #askButton:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+
+        .input-hint {
+            max-width: 850px;
+            margin: 6px auto 0;
+            text-align: center;
+            font-size: 10px;
+            color: #9ca3af;
+        }
+
+
+        /* =====================================================
+           LOADING
+           ===================================================== */
+
+        .loading {
+            display: none;
+            padding: 10px 0;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           ERROR
+           ===================================================== */
+
+        .error {
+            display: none;
+            margin: 15px auto;
+            max-width: 850px;
+            padding: 12px 15px;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                display: none;
+            }
+
+
+            .topbar {
+                padding: 0 17px;
+            }
+
+
+            .topbar-title {
+                font-size: 15px;
+            }
+
+
+            .topbar-subtitle {
+                display: none;
+            }
+
+
+            .chat-area {
+                padding:
+                    25px
+                    15px
+                    140px;
+            }
+
+
+            .input-area {
+                left: 0;
+                padding:
+                    12px
+                    12px
+                    15px;
+            }
+
+
+            .user-bubble {
+                max-width: 88%;
+            }
+
+
+            .welcome {
+                padding-top: 45px;
+            }
+
+
+            .welcome h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🩺
+            </div>
+
+            <div class="brand-text">
+                Medical AI
+            </div>
+
+        </div>
+
+
+        <button
+            class="new-chat"
+            onclick="newChat()"
+        >
+            ＋ New Chat
+        </button>
+
+
+        <button
+            class="quiz-button"
+            onclick="enterQuizMode()"
+        >
+            📝 Quiz Mode
+        </button>
+
+
+        <button
+            class="study-button"
+            onclick="enterStudyMode()"
+        >
+            📖 Study Mode
+        </button>
+
+
+        <div class="sidebar-title">
+            Recent Chats
+        </div>
+
+
+        <div
+            class="saved-chats"
+            id="savedChats"
+        ></div>
+
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div class="topbar-title">
+                AI Medical Learning Assistant
+            </div>
+
+            <div class="topbar-subtitle">
+                Learn medicine with AI
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             CHAT AREA
+             ================================================= -->
+
+        <div
+            class="chat-area"
+            id="chatArea"
+        >
+
+            <div
+                class="chat-content"
+                id="chatContent"
+            >
+
+
+                <!-- =========================================
+                     WELCOME
+                     ========================================= -->
+
+                <div
+                    class="welcome"
+                    id="welcome"
+                >
+
+                    <div class="welcome-icon">
+                        🩺
+                    </div>
+
+
+                    <h1>
+                        What would you like to learn?
+                    </h1>
+
+
+                    <p>
+                        Ask about anatomy, physiology,
+                        pathology, pharmacology, or any
+                        medical topic.
+                    </p>
+
+
+                    <div class="suggestions">
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('What is the heart?')"
+                        >
+                            ❤️ What is the heart?
+                        </button>
+
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('Explain the nephron')"
+                        >
+                            🧪 Explain the nephron
+                        </button>
+
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('What is glycolysis?')"
+                        >
+                            ⚡ What is glycolysis?
+                        </button>
+
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('Explain the cardiac cycle')"
+                        >
+                            🫀 Cardiac cycle
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     CONVERSATION
+                     ========================================= -->
+
+                <div
+                    id="conversation"
+                ></div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             QUIZ MODE
+             ================================================= -->
+
+        <div
+            class="chat-area"
+            id="quizArea"
+            style="display: none;"
+        >
+
+            <div
+                class="chat-content"
+            >
+
+                <div
+                    class="quiz-panel"
+                    id="quizPanel"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             STUDY MODE
+             ================================================= -->
+
+        <div
+            class="chat-area"
+            id="studyArea"
+            style="display: none;"
+        >
+
+            <div
+                class="chat-content"
+            >
+
+                <div
+                    class="study-panel"
+                    id="studyPanel"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        <div
+            class="error"
+            id="error"
+        ></div>
+
+
+        <!-- =================================================
+             INPUT
+             ================================================= -->
+
+        <div class="input-area">
+
+
+            <div class="loading" id="loading">
+
+                🤖 AI is thinking...
+
+            </div>
+
+
+            <div class="input-wrapper">
+
+
+                <textarea
+                    id="question"
+                    placeholder="Ask a medical question..."
+                    rows="1"
+                ></textarea>
+
+
+                <button
+                    id="askButton"
+                    onclick="askQuestion()"
+                    title="Ask AI"
+                >
+                    ➤
+                </button>
+
+
+            </div>
+
+
+            <div class="input-hint">
+
+                Shift + Enter to send
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<script>
+
+
+// ============================================================
+// STATE
+// ============================================================
+
+let conversationHistory = [];
+
+let savedChats = [];
+
+let currentChatId =
+    Date.now().toString();
+
+
+// ============================================================
+// QUIZ STATE
+// ============================================================
+
+let quizState = {
+    topic: "",
+    difficulty: "basic",
+    questions: [],
+    currentIndex: 0,
+    score: 0,
+    answers: []
+};
+
+
+// ============================================================
+// STUDY STATE
+// ============================================================
+
+let studyState = {
+    topic: "",
+    difficulty: "basic",
+    lesson: null
+};
+
+
+// ============================================================
+// LOAD SAVED CHATS
+// ============================================================
+
+try {
+
+    savedChats = JSON.parse(
+        localStorage.getItem(
+            "medicalAIChats"
+        ) || "[]"
+    );
+
+
+    if (
+        !Array.isArray(savedChats)
+    ) {
+
+        savedChats = [];
+
+    }
+
+}
+catch {
+
+    savedChats = [];
+
+}
+
+
+// ============================================================
+// SAVE CHATS
+// ============================================================
+
+function saveChats() {
+
+    try {
+
+        localStorage.setItem(
+            "medicalAIChats",
+            JSON.stringify(
+                savedChats
+            )
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Could not save chats:",
+            error
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// FORMAT DATE
+// ============================================================
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    try {
+
+        return new Date(
+            value
+        ).toLocaleDateString();
+
+    }
+    catch {
+
+        return "";
+
+    }
+
+}
+
+
+// ============================================================
+// RENDER SAVED CHATS
+// ============================================================
+
+function renderSavedChats() {
+
+    const container =
+        document.getElementById(
+            "savedChats"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        savedChats.length === 0
+    ) {
+
+        container.innerHTML =
+            `
+            <div class="empty-chats">
+                Your conversations will appear here.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    savedChats
+        .slice(0, 30)
+        .forEach(chat => {
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "saved-chat";
+
+
+            if (
+                chat.id === currentChatId
+            ) {
+
+                item.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            const title =
+                document.createElement(
+                    "div"
+                );
+
+
+            title.className =
+                "saved-chat-title";
+
+
+            title.textContent =
+                chat.title ||
+                "Medical Chat";
+
+
+            const date =
+                document.createElement(
+                    "div"
+                );
+
+
+            date.className =
+                "saved-chat-date";
+
+
+            date.textContent =
+                formatDate(
+                    chat.updatedAt
+                );
+
+
+            item.appendChild(
+                title
+            );
+
+
+            item.appendChild(
+                date
+            );
+
+
+            item.onclick =
+                () => loadChat(
+                    chat.id
+                );
+
+
+            container.appendChild(
+                item
+            );
+
+        });
+
+}
+
+
+// ============================================================
+// SAVE CURRENT CHAT
+// ============================================================
+
+function saveCurrentChat() {
+
+    if (
+        conversationHistory.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const firstQuestion =
+        conversationHistory.find(
+            message =>
+                message.role === "user"
+        );
+
+
+    const title =
+        firstQuestion
+            ? firstQuestion.content
+            : "Medical Chat";
+
+
+    const existing =
+        savedChats.find(
+            chat =>
+                chat.id === currentChatId
+        );
+
+
+    if (existing) {
+
+        existing.messages =
+            conversationHistory;
+
+        existing.updatedAt =
+            new Date().toISOString();
+
+    }
+    else {
+
+        savedChats.unshift({
+
+            id:
+                currentChatId,
+
+            title:
+                title.substring(
+                    0,
+                    55
+                ),
+
+            messages:
+                conversationHistory,
+
+            createdAt:
+                new Date().toISOString(),
+
+            updatedAt:
+                new Date().toISOString()
+
+        });
+
+    }
+
+
+    saveChats();
+
+    renderSavedChats();
+
+}
+
+
+// ============================================================
+// CREATE MESSAGE
+// ============================================================
+
+function createMessage(
+    message
+) {
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.className =
+        "message";
+
+
+    if (
+        message.role === "user"
+    ) {
+
+
+        wrapper.innerHTML =
+            `
+            <div class="user-message">
+
+                <div class="user-bubble"></div>
+
+            </div>
+            `;
+
+
+        wrapper
+            .querySelector(
+                ".user-bubble"
+            )
+            .textContent =
+            message.content;
+
+
+    }
+    else {
+
+
+        wrapper.innerHTML =
+            `
+            <div class="ai-message">
+
+                <div class="ai-icon">
+                    🩺
+                </div>
+
+                <div class="ai-content">
+
+                    <div class="ai-label">
+                        Medical AI
+                    </div>
+
+                    <div class="answer"></div>
+
+                </div>
+
+            </div>
+            `;
+
+
+        wrapper
+            .querySelector(
+                ".answer"
+            )
+            .textContent =
+            message.content;
+
+    }
+
+
+    return wrapper;
+
+}
+
+
+// ============================================================
+// ADD USER MESSAGE
+// ============================================================
+
+function addUserMessage(
+    text
+) {
+
+    const conversation =
+        document.getElementById(
+            "conversation"
+        );
+
+
+    const message =
+        createMessage({
+
+            role:
+                "user",
+
+            content:
+                text
+
+        });
+
+
+    conversation.appendChild(
+        message
+    );
+
+}
+
+
+// ============================================================
+// ADD AI MESSAGE
+// ============================================================
+
+function addAIMessage(
+    data
+) {
+
+    const conversation =
+        document.getElementById(
+            "conversation"
+        );
+
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.className =
+        "message";
+
+
+    wrapper.innerHTML =
+        `
+        <div class="ai-message">
+
+            <div class="ai-icon">
+                🩺
+            </div>
+
+            <div class="ai-content">
+
+                <div class="ai-label">
+                    Medical AI
+                </div>
+
+                <div class="answer"></div>
+
+                <div class="info-row">
+
+                    <span class="badge difficulty-badge">
+                    </span>
+
+                </div>
+
+                <div class="learning-box">
+
+                    <div class="box-title">
+                        🔑 Key Points
+                    </div>
+
+                    <ul class="key-points"></ul>
+
+                </div>
+
+                <div class="memory-box">
+
+                    <div class="memory-title">
+                        🧠 Memory Aid
+                    </div>
+
+                    <div class="memory-text"></div>
+
+                </div>
+
+                <div
+                    class="image-box"
+                    style="display:none;"
+                >
+
+                    <div class="image-header">
+                        🖼️ Medical Visual
+                    </div>
+
+                    <div class="image-body">
+
+                        <div class="image-loading">
+                            Loading medical image...
+                        </div>
+
+                        <img
+                            id="medicalImage"
+                            alt="Medical educational image"
+                            referrerpolicy="no-referrer"
+                        >
+
+                        <div class="image-error">
+                            ⚠️ Medical image could not be loaded.
+                        </div>
+
+                        <div class="image-title"></div>
+
+                        <div class="image-source"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="visual-info"></div>
+
+            </div>
+
+        </div>
+        `;
+
+
+    // ========================================================
+    // ANSWER
+    // ========================================================
+
+    wrapper
+        .querySelector(
+            ".answer"
+        )
+        .textContent =
+        data.answer ||
+        "No answer available.";
+
+
+    // ========================================================
+    // DIFFICULTY
+    // ========================================================
+
+    wrapper
+        .querySelector(
+            ".difficulty-badge"
+        )
+        .textContent =
+        (
+            data.difficulty ||
+            "basic"
+        ).toUpperCase();
+
+
+    // ========================================================
+    // KEY POINTS
+    // ========================================================
+
+    const points =
+        wrapper.querySelector(
+            ".key-points"
+        );
+
+
+    if (
+        Array.isArray(
+            data.key_points
+        )
+    ) {
+
+        data.key_points.forEach(
+            point => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+                li.textContent =
+                    point;
+
+                points.appendChild(
+                    li
+                );
+
+            }
+        );
+
+    }
+
+
+    // ========================================================
+    // MEMORY AID
+    // ========================================================
+
+    wrapper
+        .querySelector(
+            ".memory-text"
+        )
+        .textContent =
+        data.memory_aid ||
+        "No memory aid available.";
+
+
+    // ========================================================
+    // VISUAL INFO
+    // ========================================================
+
+    if (data.visual) {
+
+        wrapper
+            .querySelector(
+                ".visual-info"
+            )
+            .textContent =
+            `Visual: ${
+                data.visual.type ||
+                "none"
+            } • ${
+                data.visual.topic ||
+                ""
+            }`;
+
+    }
+
+
+    // ========================================================
+    // IMAGE
+    // ========================================================
+
+    if (
+        data.image &&
+        typeof data.image.image_url === "string" &&
+        data.image.image_url.trim() !== ""
+    ) {
+
+
+        const imageBox =
+            wrapper.querySelector(
+                ".image-box"
+            );
+
+
+        const image =
+            wrapper.querySelector(
+                "#medicalImage"
+            );
+
+
+        const loading =
+            wrapper.querySelector(
+                ".image-loading"
+            );
+
+
+        const imageError =
+            wrapper.querySelector(
+                ".image-error"
+            );
+
+
+        const imageTitle =
+            wrapper.querySelector(
+                ".image-title"
+            );
+
+
+        const imageSource =
+            wrapper.querySelector(
+                ".image-source"
+            );
+
+
+        imageBox.style.display =
+            "block";
+
+
+        loading.style.display =
+            "block";
+
+
+        imageError.style.display =
+            "none";
+
+
+        imageTitle.textContent =
+            data.image.title ||
+            "Medical educational image";
+
+
+        if (
+            data.image.source_url
+        ) {
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.href =
+                data.image.source_url;
+
+
+            link.target =
+                "_blank";
+
+
+            link.rel =
+                "noopener noreferrer";
+
+
+            link.textContent =
+                "View source on Wikimedia Commons";
+
+
+            imageSource.appendChild(
+                link
+            );
+
+        }
+        else {
+
+            imageSource.textContent =
+                "Source: Wikimedia Commons";
+
+        }
+
+
+        image.onload =
+            () => {
+
+                loading.style.display =
+                    "none";
+
+                image.style.display =
+                    "block";
+
+            };
+
+
+        image.onerror =
+            () => {
+
+                loading.style.display =
+                    "none";
+
+                image.style.display =
+                    "none";
+
+                imageError.style.display =
+                    "block";
+
+            };
+
+
+        image.src =
+            data.image.image_url;
+
+    }
+
+
+    conversation.appendChild(
+        wrapper
+    );
+
+
+    // Scroll to newest answer
+
+    setTimeout(
+        () => {
+
+            wrapper.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        },
+        100
+    );
+
+}
+
+
+// ============================================================
+// LOAD CHAT
+// ============================================================
+
+function loadChat(
+    chatId
+) {
+
+    const chat =
+        savedChats.find(
+            item =>
+                item.id === chatId
+        );
+
+
+    if (!chat) {
+        return;
+    }
+
+
+    currentChatId =
+        chat.id;
+
+
+    conversationHistory =
+        Array.isArray(
+            chat.messages
+        )
+            ? chat.messages
+            : [];
+
+
+    renderConversation();
+
+
+    renderSavedChats();
+
+}
+
+
+// ============================================================
+// RENDER CONVERSATION
+// ============================================================
+
+function renderConversation() {
+
+    const conversation =
+        document.getElementById(
+            "conversation"
+        );
+
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+
+    conversation.innerHTML = "";
+
+
+    if (
+        conversationHistory.length === 0
+    ) {
+
+        welcome.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    welcome.style.display =
+        "none";
+
+
+    // IMPORTANT:
+    //
+    // Saved chats only contain user + assistant text.
+    //
+    // Therefore when loading an old chat,
+    // we display the conversation cleanly.
+    //
+    // New answers receive the full rich UI.
+
+    for (
+        let i = 0;
+        i < conversationHistory.length;
+        i++
+    ) {
+
+
+        const message =
+            conversationHistory[i];
+
+
+        if (
+            message.role === "user"
+        ) {
+
+            addUserMessage(
+                message.content
+            );
+
+        }
+        else {
+
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
+
+
+            wrapper.className =
+                "message";
+
+
+            wrapper.innerHTML =
+                `
+                <div class="ai-message">
+
+                    <div class="ai-icon">
+                        🩺
+                    </div>
+
+                    <div class="ai-content">
+
+                        <div class="ai-label">
+                            Medical AI
+                        </div>
+
+                        <div class="answer"></div>
+
+                    </div>
+
+                </div>
+                `;
+
+
+            wrapper
+                .querySelector(
+                    ".answer"
+                )
+                .textContent =
+                message.content;
+
+
+            conversation.appendChild(
+                wrapper
+            );
+
+        }
+
+    }
+
+
+    setTimeout(
+        () => {
+
+            const area =
+                document.getElementById(
+                    "chatArea"
+                );
+
+
+            area.scrollTop =
+                area.scrollHeight;
+
+        },
+        50
+    );
+
+}
+
+
+// ============================================================
+// STUDY MODE
+// ============================================================
+
+function enterStudyMode() {
+
+    exitQuizMode();
+
+    document.getElementById("chatArea").style.display = "none";
+    document.getElementById("studyArea").style.display = "block";
+    document.querySelector(".input-area").style.display = "none";
+    document.getElementById("error").style.display = "none";
+
+    renderStudySetup();
+
+}
+
+
+function exitStudyMode() {
+
+    const studyArea = document.getElementById("studyArea");
+
+    if (studyArea) {
+        studyArea.style.display = "none";
+    }
+
+    document.getElementById("chatArea").style.display = "block";
+    document.querySelector(".input-area").style.display = "block";
+
+    document.getElementById("error").style.display = "none";
+
+}
+
+
+function renderStudySetup() {
+
+    const panel = document.getElementById("studyPanel");
+
+    panel.innerHTML = `
+        <div class="study-card">
+
+            <div class="study-header">
+
+                <div>
+                    <h2 class="study-title">📖 Study Mode</h2>
+                    <div class="study-subtitle">
+                        Learn a medical topic step-by-step with AI.
+                    </div>
+                </div>
+
+                <button
+                    class="quiz-close"
+                    onclick="exitStudyMode()"
+                >
+                    ← Back to Chat
+                </button>
+
+            </div>
+
+            <div class="quiz-setup">
+
+                <div>
+                    <label class="study-label" for="studyTopic">
+                        Medical Topic
+                    </label>
+
+                    <input
+                        class="study-input"
+                        id="studyTopic"
+                        type="text"
+                        placeholder="Example: Nephron, cardiac cycle, glycolysis..."
+                    >
+                </div>
+
+                <div>
+                    <label class="study-label" for="studyDifficulty">
+                        Difficulty
+                    </label>
+
+                    <select
+                        class="study-select"
+                        id="studyDifficulty"
+                    >
+                        <option value="basic">Basic</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+
+                <button
+                    class="study-start"
+                    id="studyStartButton"
+                    onclick="startStudy()"
+                >
+                    Start Learning
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+    document.getElementById("studyTopic").focus();
+
+}
+
+
+async function startStudy() {
+
+    const topicInput = document.getElementById("studyTopic");
+    const difficultyInput = document.getElementById("studyDifficulty");
+    const button = document.getElementById("studyStartButton");
+    const panel = document.getElementById("studyPanel");
+
+    const topic = topicInput.value.trim();
+    const difficulty = difficultyInput.value;
+
+    if (!topic) {
+        alert("Please enter a medical topic.");
+        topicInput.focus();
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Generating lesson...";
+
+    try {
+
+        const response = await fetch("/study", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                topic: topic,
+                difficulty: difficulty
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(
+                data.error || "Study lesson generation failed."
+            );
+        }
+
+        studyState = {
+            topic: topic,
+            difficulty: difficulty,
+            lesson: data
+        };
+
+        renderStudyLesson(data);
+
+    }
+    catch (error) {
+
+        console.error("STUDY REQUEST FAILED:", error);
+
+        button.disabled = false;
+        button.textContent = "Start Learning";
+
+        panel.innerHTML = `
+            <div class="study-card">
+                <div class="study-header">
+                    <div>
+                        <h2 class="study-title">📖 Study Mode</h2>
+                    </div>
+                    <button
+                        class="quiz-close"
+                        onclick="renderStudySetup()"
+                    >
+                        ← Try Again
+                    </button>
+                </div>
+
+                <div class="study-section" style="background:#fef2f2; border-left:4px solid #ef4444;">
+                    <h3>⚠️ Could not generate the lesson</h3>
+                    <p class="study-text">${escapeHtml(error.message)}</p>
+                </div>
+            </div>
+        `;
+
+    }
+
+}
+
+
+function renderStudyLesson(data) {
+
+    const panel = document.getElementById("studyPanel");
+
+    const keyConcepts = Array.isArray(data.key_concepts)
+        ? data.key_concepts
+        : [];
+
+    const examPoints = Array.isArray(data.exam_points)
+        ? data.exam_points
+        : [];
+
+    panel.innerHTML = `
+        <div class="study-card">
+
+            <div class="study-header">
+                <div>
+                    <h2 class="study-title">📖 ${escapeHtml(data.topic)}</h2>
+                    <div class="study-subtitle">
+                        ${escapeHtml(data.difficulty)} • Medical Study Lesson
+                    </div>
+                </div>
+
+                <button
+                    class="quiz-close"
+                    onclick="renderStudySetup()"
+                >
+                    ← Study Another Topic
+                </button>
+            </div>
+
+            <div class="study-section">
+                <h3>📌 Introduction</h3>
+                <p class="study-text">${escapeHtml(data.introduction || "")}</p>
+            </div>
+
+            <div class="study-section">
+                <h3>🧠 Key Concepts</h3>
+                <ul class="study-list">
+                    ${keyConcepts.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+                </ul>
+            </div>
+
+            <div class="study-section">
+                <h3>📚 Detailed Explanation</h3>
+                <p class="study-text">${escapeHtml(data.detailed_explanation || "")}</p>
+            </div>
+
+            <div class="study-section study-clinical">
+                <h3>🩺 Clinical Relevance</h3>
+                <p class="study-text">${escapeHtml(data.clinical_relevance || "")}</p>
+            </div>
+
+            <div class="study-section study-exam">
+                <h3>📝 Exam Points</h3>
+                <ul class="study-list">
+                    ${examPoints.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+                </ul>
+            </div>
+
+            <div class="study-section study-memory">
+                <h3>💡 Memory Aid</h3>
+                <p class="study-text">${escapeHtml(data.memory_aid || "")}</p>
+            </div>
+
+            <div class="quiz-actions">
+                <button
+                    class="quiz-action-primary"
+                    onclick="renderStudySetup()"
+                >
+                    Study Another Topic
+                </button>
+
+                <button
+                    class="quiz-action-secondary"
+                    onclick="exitStudyMode()"
+                >
+                    Back to Chat
+                </button>
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+// ============================================================
+// QUIZ MODE
+// ============================================================
+
+function enterQuizMode() {
+
+    exitStudyMode();
+
+    document.getElementById("chatArea").style.display = "none";
+    document.getElementById("quizArea").style.display = "block";
+    document.querySelector(".input-area").style.display = "none";
+    document.getElementById("error").style.display = "none";
+
+    renderQuizSetup();
+
+}
+
+
+function exitQuizMode() {
+
+    document.getElementById("quizArea").style.display = "none";
+    document.getElementById("chatArea").style.display = "block";
+    document.querySelector(".input-area").style.display = "block";
+
+    document.getElementById("error").style.display = "none";
+
+}
+
+
+function renderQuizSetup() {
+
+    const panel = document.getElementById("quizPanel");
+
+    panel.innerHTML = `
+        <div class="quiz-card">
+
+            <div class="quiz-header">
+
+                <div>
+                    <h2 class="quiz-title">📝 Medical Quiz</h2>
+                    <div class="quiz-subtitle">
+                        Test your medical knowledge with 5 AI-generated questions.
+                    </div>
+                </div>
+
+                <button
+                    class="quiz-close"
+                    onclick="exitQuizMode()"
+                >
+                    ← Back to Chat
+                </button>
+
+            </div>
+
+
+            <div class="quiz-setup">
+
+                <div>
+                    <label class="quiz-label" for="quizTopic">
+                        Medical Topic
+                    </label>
+
+                    <input
+                        id="quizTopic"
+                        class="quiz-input"
+                        type="text"
+                        placeholder="e.g. Kidney anatomy"
+                    >
+                </div>
+
+
+                <div>
+                    <label class="quiz-label" for="quizDifficulty">
+                        Difficulty
+                    </label>
+
+                    <select
+                        id="quizDifficulty"
+                        class="quiz-select"
+                    >
+                        <option value="basic">Basic</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+
+
+                <button
+                    class="quiz-start"
+                    id="quizStartButton"
+                    onclick="startQuiz()"
+                >
+                    Start Quiz
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+async function startQuiz() {
+
+    const topicInput = document.getElementById("quizTopic");
+    const difficultyInput = document.getElementById("quizDifficulty");
+    const startButton = document.getElementById("quizStartButton");
+
+    const topic = topicInput.value.trim();
+    const difficulty = difficultyInput.value;
+
+    if (!topic) {
+        topicInput.focus();
+        return;
+    }
+
+    startButton.disabled = true;
+    startButton.textContent = "Generating quiz...";
+
+    document.getElementById("error").style.display = "none";
+
+    try {
+
+        const response = await fetch(
+            "/quiz",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    topic: topic,
+                    difficulty: difficulty
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok || data.error) {
+            throw new Error(
+                data.error ||
+                data.detail ||
+                `Server error (${response.status})`
+            );
+        }
+
+
+        if (
+            !Array.isArray(data.questions) ||
+            data.questions.length !== 5
+        ) {
+            throw new Error(
+                "The quiz server did not return exactly 5 questions."
+            );
+        }
+
+
+        quizState = {
+            topic: data.topic || topic,
+            difficulty: data.difficulty || difficulty,
+            questions: data.questions,
+            currentIndex: 0,
+            score: 0,
+            answers: []
+        };
+
+
+        renderQuizQuestion();
+
+    }
+    catch (err) {
+
+        console.error(
+            "QUIZ REQUEST FAILED:",
+            err
+        );
+
+        const error = document.getElementById("error");
+
+        error.textContent =
+            "❌ " +
+            (
+                err.message ||
+                "Could not generate the quiz."
+            );
+
+        error.style.display = "block";
+
+        startButton.disabled = false;
+        startButton.textContent = "Start Quiz";
+
+    }
+
+}
+
+
+function renderQuizQuestion() {
+
+    const panel = document.getElementById("quizPanel");
+
+    const question =
+        quizState.questions[
+            quizState.currentIndex
+        ];
+
+    const letters = ["A", "B", "C", "D"];
+
+    panel.innerHTML = `
+        <div class="quiz-card">
+
+            <div class="quiz-header">
+
+                <div>
+                    <h2 class="quiz-title">📝 ${escapeHtml(quizState.topic)}</h2>
+
+                    <div class="quiz-subtitle">
+                        ${quizState.difficulty.toUpperCase()} • Medical Quiz
+                    </div>
+                </div>
+
+                <button
+                    class="quiz-close"
+                    onclick="exitQuizMode()"
+                >
+                    ← Exit
+                </button>
+
+            </div>
+
+
+            <div class="quiz-progress">
+                Question ${quizState.currentIndex + 1} of ${quizState.questions.length}
+            </div>
+
+
+            <h3 class="quiz-question">
+                ${escapeHtml(question.question)}
+            </h3>
+
+
+            <div class="quiz-options">
+
+                ${letters.map((letter, index) => `
+                    <button
+                        class="quiz-option"
+                        onclick="selectQuizAnswer('${letter}')"
+                    >
+                        <strong>${letter}.</strong>
+                        ${escapeHtml(question.options[index] || "")}
+                    </button>
+                `).join("")}
+
+            </div>
+
+
+            <div
+                class="quiz-feedback"
+                id="quizFeedback"
+                style="display: none;"
+            ></div>
+
+
+            <button
+                class="quiz-next"
+                id="quizNextButton"
+                style="display: none;"
+                onclick="nextQuizQuestion()"
+            >
+                ${quizState.currentIndex === quizState.questions.length - 1
+                    ? "View Results"
+                    : "Next Question"}
+            </button>
+
+        </div>
+    `;
+
+}
+
+
+function selectQuizAnswer(selected) {
+
+    const question =
+        quizState.questions[
+            quizState.currentIndex
+        ];
+
+    if (
+        quizState.answers[
+            quizState.currentIndex
+        ]
+    ) {
+        return;
+    }
+
+
+    const correct =
+        question.correct_answer;
+
+    const isCorrect =
+        selected === correct;
+
+
+    if (isCorrect) {
+        quizState.score++;
+    }
+
+
+    quizState.answers[
+        quizState.currentIndex
+    ] = {
+        selected: selected,
+        correct: correct,
+        isCorrect: isCorrect
+    };
+
+
+    const options =
+        document.querySelectorAll(
+            ".quiz-option"
+        );
+
+
+    options.forEach(
+        (button, index) => {
+
+            const letter =
+                ["A", "B", "C", "D"][index];
+
+            button.disabled = true;
+
+            if (letter === correct) {
+                button.classList.add("correct");
+            }
+
+            if (
+                letter === selected &&
+                letter !== correct
+            ) {
+                button.classList.add("wrong");
+            }
+
+        }
+    );
+
+
+    const feedback =
+        document.getElementById(
+            "quizFeedback"
+        );
+
+
+    feedback.style.display = "block";
+
+    feedback.innerHTML = `
+        <strong>
+            ${isCorrect ? "✓ Correct!" : "✗ Incorrect"}
+        </strong>
+        <br>
+        Correct answer:
+        <strong>${correct}</strong>
+        <br>
+        ${escapeHtml(question.explanation || "")}
+    `;
+
+
+    document.getElementById(
+        "quizNextButton"
+    ).style.display = "block";
+
+}
+
+
+function nextQuizQuestion() {
+
+    if (
+        quizState.currentIndex >=
+        quizState.questions.length - 1
+    ) {
+
+        showQuizResults();
+
+        return;
+    }
+
+
+    quizState.currentIndex++;
+
+    renderQuizQuestion();
+
+}
+
+
+function showQuizResults() {
+
+    const panel =
+        document.getElementById(
+            "quizPanel"
+        );
+
+    const total =
+        quizState.questions.length;
+
+    const percentage =
+        Math.round(
+            (quizState.score / total) * 100
+        );
+
+
+    const review =
+        quizState.questions
+            .map(
+                (question, index) => {
+
+                    const answer =
+                        quizState.answers[index];
+
+                    const status =
+                        answer && answer.isCorrect
+                            ? "✓ Correct"
+                            : "✗ Wrong";
+
+                    const statusClass =
+                        answer && answer.isCorrect
+                            ? "quiz-review-correct"
+                            : "quiz-review-wrong";
+
+                    return `
+                        <div class="quiz-review-item">
+
+                            <div class="${statusClass}">
+                                ${status}
+                            </div>
+
+                            <div>
+                                ${escapeHtml(question.question)}
+                            </div>
+
+                            <div>
+                                Correct answer:
+                                <strong>${question.correct_answer}</strong>
+                            </div>
+
+                            <div>
+                                ${escapeHtml(question.explanation || "")}
+                            </div>
+
+                        </div>
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    panel.innerHTML = `
+        <div class="quiz-card">
+
+            <div class="quiz-header">
+
+                <div>
+                    <h2 class="quiz-title">🎉 Quiz Complete</h2>
+
+                    <div class="quiz-subtitle">
+                        ${escapeHtml(quizState.topic)}
+                    </div>
+                </div>
+
+                <button
+                    class="quiz-close"
+                    onclick="exitQuizMode()"
+                >
+                    ← Back to Chat
+                </button>
+
+            </div>
+
+
+            <div class="quiz-score">
+
+                <div class="quiz-score-number">
+                    ${quizState.score}/${total}
+                </div>
+
+                <div class="quiz-score-label">
+                    ${percentage}% •
+                    ${quizState.score === total
+                        ? "Excellent work!"
+                        : "Keep practicing!"}
+                </div>
+
+            </div>
+
+
+            <div class="quiz-review">
+                ${review}
+            </div>
+
+
+            <div class="quiz-actions">
+
+                <button
+                    class="quiz-action-primary"
+                    onclick="renderQuizSetup()"
+                >
+                    Try Another Quiz
+                </button>
+
+                <button
+                    class="quiz-action-secondary"
+                    onclick="exitQuizMode()"
+                >
+                    Back to Chat
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+// ============================================================
+// NEW CHAT
+// ============================================================
+
+function newChat() {
+
+    exitQuizMode();
+    exitStudyMode();
+
+    conversationHistory = [];
+
+    currentChatId =
+        Date.now().toString();
+
+
+    document
+        .getElementById(
+            "conversation"
+        )
+        .innerHTML = "";
+
+
+    document
+        .getElementById(
+            "welcome"
+        )
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById(
+            "question"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "error"
+        )
+        .style.display =
+        "none";
+
+
+    renderSavedChats();
+
+
+    document
+        .getElementById(
+            "question"
+        )
+        .focus();
+
+}
+
+
+// ============================================================
+// SUGGESTION
+// ============================================================
+
+function useSuggestion(
+    text
+) {
+
+    document
+        .getElementById(
+            "question"
+        )
+        .value =
+        text;
+
+
+    askQuestion();
+
+}
+
+
+// ============================================================
+// ASK QUESTION
+// ============================================================
+
+async function askQuestion() {
+
+
+    const question =
+        document
+            .getElementById(
+                "question"
+            )
+            .value
+            .trim();
+
+
+    const button =
+        document.getElementById(
+            "askButton"
+        );
+
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+
+    if (!question) {
+
+        return;
+
+    }
+
+
+    // ========================================================
+    // UI STATE
+    // ========================================================
+
+    button.disabled =
+        true;
+
+
+    loading.style.display =
+        "block";
+
+
+    error.style.display =
+        "none";
+
+
+    // ========================================================
+    // ADD USER MESSAGE IMMEDIATELY
+    // ========================================================
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+
+    welcome.style.display =
+        "none";
+
+
+    addUserMessage(
+        question
+    );
+
+
+    // ========================================================
+    // SEND TO BACKEND
+    //
+    // We send the OLD history.
+    //
+    // Current question is added to memory only after
+    // the request succeeds.
+    // ========================================================
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/ask",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            question:
+                                question,
+
+                            history:
+                                conversationHistory
+
+                        })
+
+                }
+            );
+
+
+        if (
+            !response.ok
+        ) {
+
+            let message =
+                `Server error (${response.status})`;
+
+
+            try {
+
+                const errorData =
+                    await response.json();
+
+
+                message =
+                    errorData.error ||
+                    errorData.detail ||
+                    message;
+
+            }
+            catch {
+
+            }
+
+
+            throw new Error(
+                message
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "FULL API RESPONSE:",
+            data
+        );
+
+
+        if (
+            data.error
+        ) {
+
+            throw new Error(
+                data.error
+            );
+
+        }
+
+
+        // ====================================================
+        // SAVE USER + AI MESSAGE
+        // ====================================================
+
+        conversationHistory.push({
+
+            role:
+                "user",
+
+            content:
+                question
+
+        });
+
+
+        conversationHistory.push({
+
+            role:
+                "assistant",
+
+            content:
+                data.answer ||
+                "No answer available."
+
+        });
+
+
+        // ====================================================
+        // SAVE CHAT
+        // ====================================================
+
+        saveCurrentChat();
+
+
+        // ====================================================
+        // ADD RICH AI ANSWER
+        // ====================================================
+
+        addAIMessage(
+            data
+        );
+
+
+        // ====================================================
+        // CLEAR INPUT
+        // ====================================================
+
+        document
+            .getElementById(
+                "question"
+            )
+            .value = "";
+
+
+    }
+    catch (err) {
+
+
+        console.error(
+            "REQUEST FAILED:",
+            err
+        );
+
+
+        error.textContent =
+            "❌ " +
+            (
+                err.message ||
+                "Something went wrong."
+            );
+
+
+        error.style.display =
+            "block";
+
+
+        // Remove the user message if request failed
+
+        const conversation =
+            document.getElementById(
+                "conversation"
+            );
+
+
+        if (
+            conversation.lastElementChild
+        ) {
+
+            conversation.removeChild(
+                conversation.lastElementChild
+            );
+
+        }
+
+    }
+    finally {
+
+
+        button.disabled =
+            false;
+
+
+        loading.style.display =
+            "none";
+
+    }
+
+}
+
+
+// ============================================================
+// KEYBOARD SHORTCUT
+// ============================================================
+
+document
+    .getElementById(
+        "question"
+    )
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter" &&
+                event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                askQuestion();
+
+            }
+
+        }
+    );
+
+
+// ============================================================
+// AUTO RESIZE TEXTAREA
+// ============================================================
+
+document
+    .getElementById(
+        "question"
+    )
+    .addEventListener(
+        "input",
+        function() {
+
+            this.style.height =
+                "auto";
+
+
+            this.style.height =
+                Math.min(
+                    this.scrollHeight,
+                    130
+                ) + "px";
+
+        }
+    );
+
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+
+renderSavedChats();
+
+</script>
+
+
+</body>
+
+</html>
