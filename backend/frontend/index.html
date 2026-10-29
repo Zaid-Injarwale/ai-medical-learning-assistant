@@ -1158,9 +1158,14 @@
         }
 
 
+
         /* =====================================================
-           MOBILE
+           MOBILE BOTTOM NAVIGATION
            ===================================================== */
+
+        .mobile-nav {
+            display: none;
+        }
 
         @media (max-width: 750px) {
 
@@ -1168,54 +1173,251 @@
                 display: none;
             }
 
-
             .topbar {
-                padding: 0 17px;
+                height: 62px;
+                padding: 0 16px;
             }
-
 
             .topbar-title {
                 font-size: 15px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
-
 
             .topbar-subtitle {
                 display: none;
             }
 
-
             .chat-area {
-                padding:
-                    25px
-                    15px
-                    140px;
+                padding: 25px 14px 220px;
             }
-
 
             .input-area {
                 left: 0;
-                padding:
-                    12px
-                    12px
-                    15px;
+                bottom: 72px;
+                padding: 10px 12px 8px;
+                z-index: 50;
+                background: linear-gradient(
+                    transparent,
+                    #f7f9fc 28%
+                );
             }
 
-
-            .user-bubble {
-                max-width: 88%;
+            .input-wrapper {
+                border-radius: 18px;
+                padding: 7px;
+                box-shadow: 0 5px 24px rgba(0, 0, 0, 0.09);
             }
 
+            #question {
+                min-height: 44px;
+                font-size: 15px;
+                padding: 10px 11px;
+            }
+
+            #askButton {
+                width: 44px;
+                height: 44px;
+                border-radius: 14px;
+            }
+
+            .input-hint {
+                display: none;
+            }
 
             .welcome {
-                padding-top: 45px;
+                padding: 48px 8px 35px;
             }
 
+            .welcome-icon {
+                width: 62px;
+                height: 62px;
+                font-size: 30px;
+            }
+
+            .welcome h1 {
+                font-size: 27px;
+                line-height: 1.18;
+                margin-top: 18px;
+            }
+
+            .welcome p {
+                font-size: 14px;
+                line-height: 1.65;
+            }
+
+            .suggestions {
+                gap: 8px;
+                margin-top: 22px;
+            }
+
+            .suggestion {
+                font-size: 12.5px;
+                padding: 10px 13px;
+            }
+
+            .quiz-area,
+            .study-area {
+                padding-bottom: 90px;
+            }
+
+            .quiz-panel,
+            .study-panel {
+                margin: 15px auto 0;
+            }
+
+            .quiz-card,
+            .study-card {
+                padding: 17px;
+                border-radius: 18px;
+            }
+
+            .quiz-title,
+            .study-title {
+                font-size: 21px;
+            }
+
+            .quiz-subtitle,
+            .study-subtitle {
+                font-size: 12px;
+                line-height: 1.5;
+            }
+
+            .quiz-header,
+            .study-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .quiz-close {
+                width: 100%;
+            }
+
+            .quiz-input,
+            .quiz-select,
+            .study-input,
+            .study-select {
+                min-height: 48px;
+                font-size: 15px;
+            }
+
+            .quiz-start,
+            .study-start,
+            .quiz-next,
+            .quiz-action-primary,
+            .quiz-action-secondary {
+                min-height: 48px;
+                border-radius: 13px;
+            }
+
+            .quiz-question {
+                font-size: 17px;
+                line-height: 1.5;
+            }
+
+            .quiz-option {
+                min-height: 52px;
+                font-size: 14px;
+                padding: 12px;
+                border-radius: 13px;
+            }
+
+            .study-section {
+                padding: 14px;
+                border-radius: 13px;
+            }
+
+            .study-section h3 {
+                font-size: 15px;
+            }
+
+            .study-text,
+            .study-list {
+                font-size: 13.5px;
+            }
+
+            .mobile-nav {
+                position: fixed;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+                height: 64px;
+                padding: 6px;
+                z-index: 100;
+                background: rgba(255, 255, 255, 0.96);
+                border: 1px solid #e5e7eb;
+                border-radius: 20px;
+                box-shadow: 0 8px 28px rgba(15, 23, 42, 0.14);
+                backdrop-filter: blur(12px);
+            }
+
+            .mobile-nav-button {
+                border: none;
+                background: transparent;
+                border-radius: 15px;
+                color: #64748b;
+                font-family: inherit;
+                font-size: 11px;
+                font-weight: 700;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                cursor: pointer;
+                transition: 0.18s;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .mobile-nav-icon {
+                font-size: 20px;
+                line-height: 1;
+            }
+
+            .mobile-nav-button.active {
+                background: #eff6ff;
+                color: #2563eb;
+            }
+
+            .mobile-nav-button.study-active {
+                background: #f0fdf4;
+                color: #15803d;
+            }
+
+            .mobile-nav-button.quiz-active {
+                background: #fff7ed;
+                color: #ea580c;
+            }
+
+            .mobile-nav-button:active {
+                transform: scale(0.96);
+            }
+        }
+
+        @media (max-width: 380px) {
+            .topbar-title {
+                font-size: 14px;
+            }
+
+            .welcome {
+                padding-top: 35px;
+            }
 
             .welcome h1 {
                 font-size: 25px;
             }
 
+            .mobile-nav {
+                left: 7px;
+                right: 7px;
+                bottom: 7px;
+            }
         }
+
 
     </style>
 
@@ -1503,6 +1705,41 @@
 
 
         </div>
+
+        <!-- =================================================
+             MOBILE NAVIGATION
+             ================================================= -->
+
+        <nav class="mobile-nav" id="mobileNav">
+
+            <button
+                class="mobile-nav-button active"
+                id="mobileChatButton"
+                onclick="mobileGoChat()"
+            >
+                <span class="mobile-nav-icon">💬</span>
+                <span>Chat</span>
+            </button>
+
+            <button
+                class="mobile-nav-button"
+                id="mobileStudyButton"
+                onclick="enterStudyMode()"
+            >
+                <span class="mobile-nav-icon">📖</span>
+                <span>Study</span>
+            </button>
+
+            <button
+                class="mobile-nav-button"
+                id="mobileQuizButton"
+                onclick="enterQuizMode()"
+            >
+                <span class="mobile-nav-icon">📝</span>
+                <span>Quiz</span>
+            </button>
+
+        </nav>
 
 
     </main>
@@ -2486,6 +2723,65 @@ function renderConversation() {
 }
 
 
+
+// ============================================================
+// MOBILE NAVIGATION
+// ============================================================
+
+function setMobileNavActive(mode) {
+
+    const chat = document.getElementById("mobileChatButton");
+    const study = document.getElementById("mobileStudyButton");
+    const quiz = document.getElementById("mobileQuizButton");
+
+    [chat, study, quiz].forEach(button => {
+
+        if (button) {
+            button.classList.remove(
+                "active",
+                "study-active",
+                "quiz-active"
+            );
+        }
+
+    });
+
+    if (mode === "study" && study) {
+
+        study.classList.add("study-active");
+
+    }
+    else if (mode === "quiz" && quiz) {
+
+        quiz.classList.add("quiz-active");
+
+    }
+    else if (chat) {
+
+        chat.classList.add("active");
+
+    }
+
+}
+
+
+function mobileGoChat() {
+
+    exitQuizMode();
+    exitStudyMode();
+
+    setMobileNavActive("chat");
+
+    const question =
+        document.getElementById("question");
+
+    if (question) {
+        question.focus();
+    }
+
+}
+
+
 // ============================================================
 // STUDY MODE
 // ============================================================
@@ -2493,6 +2789,7 @@ function renderConversation() {
 function enterStudyMode() {
 
     exitQuizMode();
+    setMobileNavActive("study");
 
     document.getElementById("chatArea").style.display = "none";
     document.getElementById("studyArea").style.display = "block";
@@ -2516,6 +2813,8 @@ function exitStudyMode() {
     document.querySelector(".input-area").style.display = "block";
 
     document.getElementById("error").style.display = "none";
+
+    setMobileNavActive("chat");
 
 }
 
@@ -2769,6 +3068,7 @@ function renderStudyLesson(data) {
 function enterQuizMode() {
 
     exitStudyMode();
+    setMobileNavActive("quiz");
 
     document.getElementById("chatArea").style.display = "none";
     document.getElementById("quizArea").style.display = "block";
@@ -2787,6 +3087,8 @@ function exitQuizMode() {
     document.querySelector(".input-area").style.display = "block";
 
     document.getElementById("error").style.display = "none";
+
+    setMobileNavActive("chat");
 
 }
 
@@ -3308,6 +3610,7 @@ function newChat() {
 
     exitQuizMode();
     exitStudyMode();
+    setMobileNavActive("chat");
 
     conversationHistory = [];
 
